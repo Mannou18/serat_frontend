@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Modal, Form, Input, Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import { addVoiture, updateVoiture } from '../../../redux/voitures/actions';
@@ -83,6 +84,23 @@ const VoitureModal = ({ visible, onCancel, voiture }) => {
       </Form>
     </Modal>
   );
+};
+
+VoitureModal.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  voiture: PropTypes.shape({
+    id: PropTypes.string,
+    marque: PropTypes.string,
+    modele: PropTypes.string,
+    immatriculation: PropTypes.string,
+    proprietaire: PropTypes.string,
+    telephone: PropTypes.string,
+  }),
+};
+
+VoitureModal.defaultProps = {
+  voiture: null,
 };
 
 export default VoitureModal; 
