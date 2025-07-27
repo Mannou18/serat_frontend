@@ -19,7 +19,7 @@ const AddNeotrack = ({ visible, onCancel, onSubmit, loading, initialValues, erro
       setFetching(true);
       clientService.getAllClients(1, 1000)
         .then((clientsRes) => {
-          setCustomers(clientsRes.customers || clientsRes.data || []);
+        setCustomers(clientsRes.customers || clientsRes.data || []);
         })
         .finally(() => setFetching(false));
     }
@@ -230,16 +230,16 @@ const AddNeotrack = ({ visible, onCancel, onSubmit, loading, initialValues, erro
         </div>
         <div style={{ marginBottom: 8 }} />
         <Card style={{ background: '#fafbfc', borderRadius: 8, boxShadow: '0 1px 4px rgba(0,0,0,0.03)', marginBottom: 0, border: 'none' }}>
-          <Form
-            form={form}
-            layout="vertical"
-            validateTrigger="onBlur"
-            onFinishFailed={({ errorFields, values }) => {
-              console.log('Validation failed:', errorFields);
-              console.log('Form values on fail:', values);
-              message.error('Veuillez remplir tous les champs obligatoires.');
-            }}
-          >
+        <Form
+          form={form}
+          layout="vertical"
+          validateTrigger="onBlur"
+          onFinishFailed={({ errorFields, values }) => {
+            console.log('Validation failed:', errorFields);
+            console.log('Form values on fail:', values);
+            message.error('Veuillez remplir tous les champs obligatoires.');
+          }}
+        >
             <Row gutter={16} style={{ marginBottom: 0 }}>
               <Col xs={24} sm={24} md={12}>
                 <Form.Item name="customer" label={<span style={{ fontWeight: 600, textAlign: 'left' }}>Client</span>} rules={[{ required: true, message: 'Veuillez sélectionner un client' }]}> 
@@ -250,11 +250,11 @@ const AddNeotrack = ({ visible, onCancel, onSubmit, loading, initialValues, erro
                     onChange={val => setSelectedClient(val)}
                     value={selectedClient}
                   >
-                    {customers.map((c) => (
-                      <Select.Option key={c._id} value={c._id}>{c.fname} {c.lname} - {c.phoneNumber}</Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
+              {customers.map((c) => (
+                <Select.Option key={c._id} value={c._id}>{c.fname} {c.lname} - {c.phoneNumber}</Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
                 {/* Action button OUTSIDE Form.Item */}
                 <div style={{ textAlign: 'right', marginTop: -8, marginBottom: 12 }}>
                   <Button
@@ -271,26 +271,26 @@ const AddNeotrack = ({ visible, onCancel, onSubmit, loading, initialValues, erro
               </Col>
               <Col xs={24} sm={24} md={12}>
                 <Form.Item name="car" label={<span style={{ fontWeight: 600, textAlign: 'left' }}>Voiture</span>} rules={[{ required: true, message: 'Veuillez sélectionner une voiture' }]}> 
-                  <Select
-                    showSearch
+            <Select
+              showSearch
                     placeholder="Sélectionnez une voiture"
                     loading={carsLoading}
-                    optionFilterProp="children"
+              optionFilterProp="children"
                     filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
                     disabled={clientCars.length === 0}
                     onChange={val => setSelectedCar(val)}
                     value={selectedCar}
-                  >
+            >
                     {clientCars.map((car) => {
                       const label = [car.brand?.brand_name, car.model_name, car.matricule || car._id].filter(Boolean).join(' ');
                       return (
                         <Select.Option key={car._id || car.id} value={car._id || car.id}>
                           {label}
-                        </Select.Option>
+                </Select.Option>
                       );
                     })}
-                  </Select>
-                </Form.Item>
+            </Select>
+          </Form.Item>
                 {/* Action button OUTSIDE Form.Item */}
                 <div style={{ textAlign: 'right', marginTop: -8, marginBottom: 12 }}>
                   <Button
@@ -317,24 +317,24 @@ const AddNeotrack = ({ visible, onCancel, onSubmit, loading, initialValues, erro
               <Col xs={24} sm={24} md={12}>
                 <Form.Item name="simNumber" label={<span style={{ fontWeight: 600, textAlign: 'left' }}>Numéro SIM Boitier</span>} rules={[{ required: true, message: 'Obligatoire' }]}> 
                   <Input />
-                </Form.Item>
+          </Form.Item>
               </Col>
               <Col xs={24} sm={24} md={12}>
                 <Form.Item name="boitierId" label={<span style={{ fontWeight: 600, textAlign: 'left' }}>ID Boitier</span>} rules={[{ required: true, message: 'Obligatoire' }]}> 
                   <Input />
-                </Form.Item>
+          </Form.Item>
               </Col>
               <Col xs={24} sm={24} md={12}>
-                <Form.Item
-                  name="price"
+          <Form.Item
+            name="price"
                   label={<span style={{ fontWeight: 600, textAlign: 'left' }}>Prix</span>}
-                  rules={[{ required: true, message: 'Obligatoire' }]}
-                >
-                  <InputNumber min={0} style={{ width: '100%' }} />
-                </Form.Item>
+            rules={[{ required: true, message: 'Obligatoire' }]}
+          >
+            <InputNumber min={0} style={{ width: '100%' }} />
+          </Form.Item>
               </Col>
             </Row>
-          </Form>
+        </Form>
         </Card>
       </Spin>
     </Modal>

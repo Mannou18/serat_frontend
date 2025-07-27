@@ -29,7 +29,7 @@ function SocialMediaOverview() {
     return undefined;
   };
 
-  const stats = [
+const stats = [
     {
       icon: faSatelliteDish,
       color: '#6d4c41',
@@ -44,14 +44,14 @@ function SocialMediaOverview() {
       value: getNumber(globalStats.totalVoitures),
       bg: 'rgba(25,118,210,0.08)',
     },
-    {
-      icon: faTags,
-      color: '#b71c1c',
-      label: 'Catégories',
+  {
+    icon: faTags,
+    color: '#b71c1c',
+    label: 'Catégories',
       value: getNumber(globalStats.categories),
-      bg: 'rgba(183,28,28,0.08)',
-    },
-    {
+    bg: 'rgba(183,28,28,0.08)',
+  },
+  {
       icon: faTools,
       color: '#388e3c',
       label: 'Services',
@@ -60,20 +60,20 @@ function SocialMediaOverview() {
     },
     {
       icon: faMoneyBillWave,
-      color: '#f57c00',
-      label: 'Achats',
+    color: '#f57c00',
+    label: 'Achats',
       value: getNumber(globalStats.totalAchatsComptants),
-      bg: 'rgba(245,124,0,0.08)',
+    bg: 'rgba(245,124,0,0.08)',
       isMoney: true,
-    },
-    {
-      icon: faArchive,
+  },
+  {
+    icon: faArchive,
       color: '#8e24aa',
-      label: 'Produits',
+    label: 'Produits',
       value: getNumber(globalStats.products),
       bg: 'rgba(142,36,170,0.08)',
-    },
-  ];
+  },
+];
 
   return (
     <SocialMediaWrapper>

@@ -64,6 +64,15 @@ function MenuItems({ darkMode, toggleCollapsed, topMenu }) {
         </Menu.Item>
       </SubMenu>
 
+      {/* Services */}
+      <SubMenu key="services" icon={<FeatherIcon icon="tool" size={18} />} title="Services">
+        <Menu.Item key="services-list">
+          <NavLink onClick={toggleCollapsed} to={`${path}/services/list`}>
+            Liste des services
+          </NavLink>
+        </Menu.Item>
+      </SubMenu>
+
       {/* Clients */}
       <SubMenu key="clients" icon={<FeatherIcon icon="users" size={18} />} title="Clients">
         <Menu.Item key="clients-list">
@@ -83,6 +92,13 @@ function MenuItems({ darkMode, toggleCollapsed, topMenu }) {
       <Menu.Item key="neotrack" icon={<FeatherIcon icon="navigation" size={18} />}>
         <NavLink onClick={toggleCollapsed} to={`${path}/neotrack`}>
           Neotrack
+        </NavLink>
+      </Menu.Item>
+
+      {/* Comptabilité */}
+      <Menu.Item key="comptabilite" icon={<FeatherIcon icon="dollar-sign" size={18} />}>
+        <NavLink onClick={toggleCollapsed} to={`${path}/comptabilite`}>
+          Comptabilité
         </NavLink>
       </Menu.Item>
     </Menu>

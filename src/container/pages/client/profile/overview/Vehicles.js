@@ -230,8 +230,8 @@ function Vehicles({ clientData: initialClientData }) {
               <h2 style={{ margin: 0, fontWeight: 600 }}>Voitures Associées</h2>
           </Col>
             <Col>
-              <Button
-                type="primary"
+              <Button 
+                type="primary" 
                 size="default"
                 style={{
                   background: '#b71c1c',
@@ -249,7 +249,7 @@ function Vehicles({ clientData: initialClientData }) {
               >
                 <FeatherIcon icon="plus" size={13} style={{ marginRight: 6 }} /> Associer une voiture
               </Button>
-            </Col>
+          </Col>
         </Row>
           <ProductListWrapper>
             <Table

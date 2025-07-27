@@ -1,70 +1,111 @@
-# Getting Started with Create React App
+# Serat Electronics - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🚀 Features
 
-## Available Scripts
+### Dashboard
+- **Upcoming Installments**: Beautiful dashboard showing clients with upcoming payments
+- **Client Management**: View and manage all clients
+- **Statistics**: Revenue tracking and payment status
 
-In the project directory, you can run:
+### Comptabilité (Accounting)
+- **Revenue Tracking**: Total revenue, cash vs installment payments
+- **Sales Management**: View all sales with payment status
+- **Invoice Generation**: PDF invoice download for each sale
+- **Advanced Filtering**: Filter by date, client, payment type
 
-### `npm start`
+### Client Management
+- **Client Profiles**: Detailed client information
+- **Sales History**: View all sales for each client
+- **Payment Tracking**: Track installment payments
+- **Invoice Management**: Generate and download invoices
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🔧 API Endpoints Required
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend API for Upcoming Installments
+The dashboard requires the following API endpoint to be implemented on the backend:
 
-### `npm test`
+```
+GET /api/installments/dashboard/upcoming
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Query Parameters:**
+- `page`: Page number (default: 1)
+- `limit`: Items per page (default: 20)
+- `daysAhead`: Number of days to look ahead (default: 30)
 
-### `npm run build`
+**Expected Response:**
+```json
+{
+  "customers": [
+    {
+      "customer": {
+        "_id": "customer_id",
+        "name": "John Doe",
+        "phoneNumber": "0123456789",
+        "cin": "12345678"
+      },
+      "upcomingInstallments": [
+        {
+          "_id": "installment_id",
+          "installment": {
+            "amount": 500,
+            "dueDate": "2024-02-15T00:00:00Z",
+            "status": "pending",
+            "daysUntilDue": 5
+          }
+        }
+      ],
+      "totalUpcomingAmount": 1500,
+      "overdueCount": 1,
+      "pendingCount": 2
+    }
+  ],
+  "stats": {
+    "totalCustomers": 15,
+    "totalUpcomingAmount": "25000.00",
+    "totalOverdueCount": 5,
+    "totalPendingCount": 25,
+    "daysAhead": 30
+  }
+}
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Note:** Until this API is implemented, the dashboard will show demo data with a "Mode Démo" indicator.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠️ Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Install dependencies:
+```bash
+npm install
+```
 
-### `npm run eject`
+2. Start the development server:
+```bash
+npm start
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. The app will run on `http://localhost:4000`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📁 Project Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+src/
+├── components/          # Reusable UI components
+├── container/          # Main application containers
+│   ├── dashboard/      # Dashboard components
+│   ├── pages/          # Page components
+│   │   ├── client/     # Client management
+│   │   └── comptabilite/ # Accounting features
+├── config/             # Configuration files
+│   └── api/           # API service files
+└── layout/            # Layout components
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🎨 Features
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **Responsive Design**: Works on desktop and mobile
+- **Modern UI**: Clean, professional interface
+- **Real-time Updates**: Live data updates
+- **PDF Generation**: Invoice downloads
+- **Advanced Filtering**: Multiple filter options
+- **Status Tracking**: Payment status with color coding

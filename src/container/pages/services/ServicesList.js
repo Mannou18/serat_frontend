@@ -12,6 +12,7 @@ import { Cards } from '../../../components/cards/frame/cards-frame';
 
 import serviceService from '../../../config/api/service.service';
 import clientService from '../../../config/api/client.service';
+import carBrandService from '../../../config/api/carBrand.service';
 
 /* eslint-disable no-underscore-dangle */
 
@@ -26,6 +27,7 @@ const ServicesList = () => {
     },
     customers: [],
   });
+  const [brands, setBrands] = useState([]);
 
   const [searchText, setSearchText] = useState('');
   const [deletedFilter, setDeletedFilter] = useState('notDeleted');
@@ -82,6 +84,10 @@ const ServicesList = () => {
   useEffect(() => {
     fetchServices();
     fetchCustomers();
+    // Fetch all brands for the AddServiceForm
+    carBrandService.getAllBrandsWithQuery('page=1&limit=1000').then(res => {
+      setBrands(res.carBrands || res.data || []);
+    });
   }, [fetchServices, fetchCustomers]);
 
   const handleTableChange = (pagination) => {
@@ -129,12 +135,6 @@ const ServicesList = () => {
   };
 
   const columns = [
-    {
-      title: 'Référence',
-      dataIndex: '_id',
-      key: '_id',
-      render: (id) => id || 'N/A',
-    },
     {
       title: 'Client',
       dataIndex: 'customer',
@@ -193,13 +193,21 @@ const ServicesList = () => {
     },
     {
       title: 'Prix',
-      dataIndex: 'price',
-      key: 'price',
-      render: (price) => (
-        <span style={{ fontWeight: 'bold', color: '#1890ff' }}>
-          {typeof price === 'number' ? price.toLocaleString('fr-FR') : price} DT
-        </span>
-      ),
+      dataIndex: 'estimatedCost',
+      key: 'estimatedCost',
+      render: (price) => {
+        let num = price;
+        if (price && typeof price === 'object' && price.$numberDecimal) num = parseFloat(price.$numberDecimal);
+        if (typeof num === 'string') num = parseFloat(num);
+        if (typeof num === 'number' && !Number.isNaN(num)) {
+          return (
+            <span style={{ fontWeight: 'bold', color: '#1890ff' }}>
+              {num.toLocaleString('fr-FR')} DT
+            </span>
+          );
+        }
+        return '-';
+      }
     },
     {
       title: 'Statut',
@@ -292,7 +300,7 @@ const ServicesList = () => {
   const handleSubmitAdd = async (values) => {
     setIsSubmitting(true);
     try {
-      const { assignedTo, ...payload } = values;
+      const payload = { ...values };
       await serviceService.addService(payload);
       message.success('Service ajouté avec succès');
       setIsAddModalVisible(false);
@@ -307,7 +315,7 @@ const ServicesList = () => {
   const handleUpdate = async (values) => {
     setIsSubmitting(true);
     try {
-      const { assignedTo, ...payload } = values;
+      const payload = { ...values };
       await serviceService.updateService(editingService._id || editingService.id, payload);
       message.success('Service modifié avec succès');
       setIsAddModalVisible(false);
@@ -405,6 +413,8 @@ const ServicesList = () => {
           initialValues={editingService ? getInitialValues(editingService) : { status: 'pending' }}
           modalTitle={editingService ? 'Modifier Service' : 'Nouveau Service'}
           okText={editingService ? 'Modifier' : 'Ajouter'}
+          clients={state.customers}
+          brands={brands}
         />
       </Main>
     </>

@@ -19,6 +19,7 @@ const SalesList = lazy(() => import('../../container/pages/sales/SalesList'));
 const ServicesList = lazy(() => import('../../container/pages/services/ServicesList'));
 const StockManagement = lazy(() => import('../../container/pages/stock/StockManagement'));
 const NeotrackList = lazy(() => import('../../container/pages/neotrack/NeotrackList'));
+const Comptabilite = lazy(() => import('../../container/pages/comptabilite/Comptabilite'));
 
 function Admin() {
   const { path } = useRouteMatch();
@@ -54,6 +55,9 @@ function Admin() {
 
         {/* Neotrack routes */}
         <Route path={`${path}/neotrack`} component={NeotrackList} />
+
+        {/* Comptabilité routes */}
+        <Route path={`${path}/comptabilite`} component={Comptabilite} />
 
         {/* Product routes */}
         <Route path={`${path}/product-list`} component={ProductList} />

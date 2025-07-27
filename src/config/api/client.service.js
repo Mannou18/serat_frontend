@@ -2,7 +2,7 @@ import axios from './axios.config';
 
 const getAllClients = async (page = 1, limit = 10) => {
   try {
-    const response = await axios.get(`/customers?page=${page}&limit=${limit}`);
+    const response = await axios.get(`/customers?page=${page}&limit=${limit}&isDeleted=false`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

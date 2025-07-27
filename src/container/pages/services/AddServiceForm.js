@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, InputNumber, Modal, Select } from 'antd';
-import clientService from '../../../config/api/client.service';
 
 const { Option } = Select;
 
@@ -20,35 +19,42 @@ const PRIORITY_OPTIONS = [
   { value: 'high', label: 'Haute' },
 ];
 
-const AddServiceForm = ({ visible, onCancel, onSubmit, loading, initialValues = {}, modalTitle = 'Nouveau Service', okText = 'Ajouter', clientId }) => {
+const AddServiceForm = ({ visible, onCancel, onSubmit, loading, initialValues = {}, modalTitle = 'Nouveau Service', okText = 'Ajouter', clients = [], brands = [] }) => {
   const [form] = Form.useForm();
-  const [cars, setCars] = useState([]);
-  const [carsLoading, setCarsLoading] = useState(false);
-
-  useEffect(() => {
-    if (visible && clientId) {
-      setCarsLoading(true);
-      clientService.getClient(clientId)
-        .then(client => {
-          setCars(client.cars || []);
-        })
-        .finally(() => setCarsLoading(false));
-    }
-  }, [visible, clientId]);
+  const [selectedClient, setSelectedClient] = useState(null);
 
   useEffect(() => {
     if (visible && initialValues && Object.keys(initialValues).length > 0) {
       form.setFieldsValue(initialValues);
+      if (initialValues.customer) setSelectedClient(initialValues.customer);
     } else if (visible) {
       form.resetFields();
+      setSelectedClient(null);
     }
   }, [visible, initialValues, form]);
+
+  const handleClientChange = (value) => {
+    setSelectedClient(value);
+    form.setFieldsValue({ car: undefined }); // reset car when client changes
+  };
+
+  const selectedClientObj = clients.find(c => (c._id || c.id) === selectedClient);
+  const clientCars = selectedClientObj?.cars || [];
+
+  // Debug logs
+  console.log('Selected client:', selectedClient);
+  console.log('Selected client object:', selectedClientObj);
+  console.log('Client cars:', clientCars);
+
+  const getBrandName = (brandId) => {
+    const brand = brands.find(b => b._id === brandId);
+    return brand ? brand.brand_name : 'Inconnu';
+  };
 
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      // Automatically assign clientId
-      onSubmit({ ...values, customer: clientId });
+      onSubmit({ ...values, customer: selectedClient });
     } catch (error) {/* ignore */}
   };
 
@@ -67,7 +73,30 @@ const AddServiceForm = ({ visible, onCancel, onSubmit, loading, initialValues = 
         layout="vertical"
         name="addServiceForm"
       >
-        {/* Removed Client field */}
+        <Form.Item
+          name="customer"
+          label="Client"
+          rules={[{ required: true, message: 'Veuillez sélectionner un client' }]}
+        >
+          <Select
+            showSearch
+            placeholder="Sélectionnez un client"
+            optionFilterProp="children"
+            filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+            onChange={handleClientChange}
+            value={selectedClient}
+            disabled={loading || clients.length === 0}
+          >
+            {clients.map(client => {
+              const label = `${client.fname || ''} ${client.lname || ''} - ${client.phoneNumber || client.cin || ''}`.trim();
+              return (
+                <Option key={client._id || client.id} value={client._id || client.id}>
+                  {label}
+                </Option>
+              );
+            })}
+          </Select>
+        </Form.Item>
         <Form.Item
           name="car"
           label="Voiture"
@@ -75,14 +104,14 @@ const AddServiceForm = ({ visible, onCancel, onSubmit, loading, initialValues = 
         >
           <Select
             showSearch
-            placeholder="Sélectionnez une voiture"
-            loading={carsLoading}
+            placeholder={selectedClient ? "Sélectionnez une voiture" : "Sélectionnez d'abord un client"}
+            loading={loading}
             optionFilterProp="children"
             filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-            disabled={cars.length === 0}
+            disabled={!selectedClient || clientCars.length === 0}
           >
-            {cars.map((car) => {
-              const label = [car.brand?.brand_name, car.model_name, car.matricule || car.plate_number || car._id].filter(Boolean).join(' ');
+            {clientCars.map((car) => {
+              const label = `${getBrandName(car.brand)} ${car.model_name || ''} - ${car.matricule || car.plate_number || car._id}`;
               return (
                 <Option key={car._id || car.id} value={car._id || car.id}>
                   {label}
@@ -146,7 +175,8 @@ AddServiceForm.propTypes = {
   initialValues: PropTypes.object,
   modalTitle: PropTypes.string,
   okText: PropTypes.string,
-  clientId: PropTypes.string.isRequired,
+  clients: PropTypes.array,
+  brands: PropTypes.array,
 };
 
 export default AddServiceForm; 
